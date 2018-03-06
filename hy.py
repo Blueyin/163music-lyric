@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import re
-
+import urllib
 
 def get_html(url):
     #  模拟网页请求
@@ -58,6 +58,10 @@ def write_text(song_name, lyric):
     with open('music/{}.txt'.format(song_name), 'a', encoding='utf-8') as fp:
         fp.write(lyric)
 
+def download_song(song_name, song_id):
+    singer_url = 'http://music.163.com/song/media/outer/url?id={}.mp3'.format(song_id)
+    print('正在下载歌曲：{}'.format(song_name))
+    urllib.request.urlretrieve(singer_url, 'songs\\{}.mp3'.format(song_name))
 
 if __name__ == '__main__':
     # 唱歌人ID
@@ -71,3 +75,5 @@ if __name__ == '__main__':
     for singer_info in singer_infos:
         lyric = get_lyric(singer_info[1])
         write_text(singer_info[0], lyric)
+        download_song(singer_info[0], singer_info[1])
+
